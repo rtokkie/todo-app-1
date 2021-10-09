@@ -1,10 +1,12 @@
 import { firestore } from "firebase-admin";
 import { WithIdAndRef } from "../types";
 
-export const createConvertor = <T>(): firestore.FirestoreDataConverter<T> => ({
-  toFirestore: (data: T | Partial<T>) => data,
-  fromFirestore: (snap) => snap.data() as T,
-});
+export const createConvertor = <T>(): firestore.FirestoreDataConverter<T> => {
+  return {
+    toFirestore: (data: T | Partial<T>) => data,
+    fromFirestore: (snap) => snap.data() as T,
+  };
+};
 
 export const fetchDoc = async <T>(docRef: firestore.DocumentReference) => {
   const docSnap = await docRef.get();

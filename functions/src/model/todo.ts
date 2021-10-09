@@ -9,8 +9,10 @@ export type Model = _Todo.Model<Data, DocumentReference>;
 
 export const convertor = createConvertor<Data>();
 
-export const collectionRef = () =>
-  db.collection(_Todo.collectionPath()).withConverter(convertor);
+export const collectionRef = () => {
+  return db.collection(_Todo.collectionPath()).withConverter(convertor);
+};
 
-export const docRef = ({ todoId }: { todoId: string }) =>
-  collectionRef().doc(todoId);
+export const docRef = ({ todoId }: { todoId: string }) => {
+  return collectionRef().doc(todoId);
+};

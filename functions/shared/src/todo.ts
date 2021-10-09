@@ -1,6 +1,8 @@
 import { WithIdAndRef } from "./types";
 
-export const collectionPath = () => "todos";
+export const collectionPath = () => {
+  return "todos";
+};
 
 export type Data<DocumentReference, Timestamp> = {
   content: string;
