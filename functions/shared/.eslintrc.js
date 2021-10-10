@@ -9,6 +9,10 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 12,
   },
-  plugins: ['@typescript-eslint'],
-  rules: {},
+  plugins: ['@typescript-eslint', 'simple-import-sort'],
+  rules: {
+    '@typescript-eslint/explicit-module-boundary-types': 'off',
+    'simple-import-sort/imports': 'error',
+    'simple-import-sort/exports': 'error',
+  },
 }

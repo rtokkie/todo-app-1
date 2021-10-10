@@ -1,4 +1,5 @@
 import { firestore } from 'firebase-admin'
+
 import { WithIdAndRef } from '../types'
 
 export const createConvertor = <Data>(): firestore.FirestoreDataConverter<Data> => {

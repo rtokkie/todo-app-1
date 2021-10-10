@@ -1,19 +1,32 @@
-import { WithIdAndRef } from './types'
-
 export const collectionPath = () => {
   return 'todos'
 }
 
-export type Data<DocumentReference, Timestamp> = {
+export type Data<DocRef, Time> = {
   content: string
   completed: boolean
-  createdAt: Timestamp
-  updatedAt: Timestamp
-  deletedAt: Timestamp | null
+  createdAt: Time
+  updatedAt: Time
+  deletedAt: Time | null
   creator: {
     id: string
-    ref: DocumentReference
+    ref: DocRef
   }
 }
 
-export type Model<Data, DocumentReference> = WithIdAndRef<Data, DocumentReference>
+export const getDefaultData = <DocRef, Time>({
+  now,
+  creator,
+}: {
+  now: Time
+  creator: { id: string; ref: DocRef }
+}) => {
+  return {
+    content: '',
+    completed: false,
+    createdAt: now,
+    updatedAt: now,
+    deletedAt: null,
+    creator,
+  }
+}
