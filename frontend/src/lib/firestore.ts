@@ -4,11 +4,9 @@ import {
   FirestoreDataConverter,
   getDoc,
   getDocs,
-  onSnapshot,
   Query,
   SnapshotOptions,
 } from 'firebase/firestore'
-import { DependencyList, useEffect, useMemo, useState } from 'react'
 
 import { WithIdAndRef } from '../types'
 

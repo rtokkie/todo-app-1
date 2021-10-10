@@ -1,3 +1,5 @@
+import { _FieldValue, _Timestamp } from './lib/firestore'
+
 export const collectionPath = () => {
   return 'users'
 }
@@ -6,14 +8,14 @@ export type DocRefOptions = {
   userId: string
 }
 
-export type Data<Time> = {
+export type Data<Timestamp extends _Timestamp> = {
   email: string
   name: string
-  createdAt: Time
-  updatedAt: Time
+  createdAt: Timestamp
+  updatedAt: Timestamp
 }
 
-export const defaultData = <Time>({ now }: { now: Time }) => {
+export const defaultData = <Now extends _Timestamp | _FieldValue>({ now }: { now: Now }) => {
   return {
     email: '',
     name: '',

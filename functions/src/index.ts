@@ -1,20 +1,9 @@
-import './firebaseApp'
-
-import { firestore } from 'firebase-admin'
 import * as functions from 'firebase-functions'
-import { _Todo } from 'shared'
 
-import { Todo, User } from './model'
+import { auth, db } from './firebaseApp'
 
-export const helloWorld = functions.https.onRequest((request, response) => {
-  const unknownCreator = User.collectionRef().doc()
+const functionsWithRegion = functions.region('asia-northeast1')
 
-  const todo: Todo.Data = {
-    ..._Todo.defaultData({
-      now: firestore.Timestamp.now(),
-      creator: { id: unknownCreator.id, ref: User.docRef({ userId: unknownCreator.id }) },
-    }),
-  }
-
-  response.send(todo)
+export const helloWorld = functionsWithRegion.https.onRequest((request, response) => {
+  response.send('Hello World')
 })

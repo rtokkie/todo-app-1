@@ -1,3 +1,4 @@
+import { firestore } from 'firebase-admin'
 import { _User } from 'shared'
 
 import { db } from '../firebaseApp'

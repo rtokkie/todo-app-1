@@ -2,10 +2,33 @@ import { firestore } from 'firebase-admin'
 
 import { WithIdAndRef } from '../types'
 
-export const createConvertor = <Data>(): firestore.FirestoreDataConverter<Data> => {
+type Primitive = string | number | boolean | undefined | null
+
+export type WithFieldValue<T> = T extends Primitive
+  ? T
+  : T extends Record<string, unknown>
+  ? {
+      [K in keyof T]: WithFieldValue<T[K]> | firestore.FieldValue
+    }
+  : T
+
+// NOTE: 改造前
+// export type WithFieldValue<T> = T extends Primitive
+//   ? T
+//   : T extends {}
+//   ? {
+//       [K in keyof T]: WithFieldValue<T[K]> | firestore.FieldValue
+//     }
+//   : Partial<T>
+
+export const createConvertor = <Data>() => {
   return {
-    toFirestore: (data: Data | Partial<Data>) => data,
-    fromFirestore: (snap) => snap.data() as Data,
+    toFirestore: (data: WithFieldValue<Data> | Partial<WithFieldValue<Data>>) => {
+      return data as firestore.DocumentData
+    },
+    fromFirestore: (snap: firestore.DocumentSnapshot) => {
+      return snap.data() as Data
+    },
   }
 }
 
