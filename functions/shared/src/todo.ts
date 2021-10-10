@@ -1,5 +1,3 @@
-import { _DocumentReference, _FieldValue, _Timestamp } from './lib/firestore'
-
 export const collectionPath = () => {
   return 'todos'
 }
@@ -8,7 +6,7 @@ export type DocRefOptions = {
   todoId: string
 }
 
-export type Data<DocumentReference extends _DocumentReference, Timestamp extends _Timestamp> = {
+export type Data<DocumentReference, Timestamp> = {
   content: string
   completed: boolean
   createdAt: Timestamp
@@ -20,14 +18,11 @@ export type Data<DocumentReference extends _DocumentReference, Timestamp extends
   }
 }
 
-export const defaultData = <
-  Now extends _Timestamp | _FieldValue,
-  DocumentReference extends _DocumentReference
->({
+export const defaultData = <DocumentReference, TimestampOrFieldValue>({
   now,
   creator,
 }: {
-  now: Now
+  now: TimestampOrFieldValue
   creator: {
     id: string
     ref: DocumentReference

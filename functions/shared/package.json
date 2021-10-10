@@ -19,9 +19,5 @@
     "start": "tsc -w",
     "pack": "yarn pack"
   },
-  "private": true,
-  "dependencies": {
-    "firebase": "^9.1.2",
-    "firebase-admin": "^9.12.0"
-  }
+  "private": true
 }
