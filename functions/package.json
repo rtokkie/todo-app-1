@@ -1,14 +1,14 @@
 {
   "name": "functions",
   "scripts": {
-    "build:shared": "cd ./shared && npm run build",
     "prebuild": "yarn build:shared && rimraf lib",
     "build": "tsc",
     "start": "tsc -w",
     "serve": "yarn build && firebase emulators:start --only functions",
     "shell": "yarn build && firebase functions:shell",
     "deploy": "firebase deploy --only functions",
-    "logs": "firebase functions:log"
+    "logs": "firebase functions:log",
+    "build:shared": "cd ./shared && yarn build"
   },
   "engines": {
     "node": "14"
