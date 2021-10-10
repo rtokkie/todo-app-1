@@ -7,12 +7,12 @@ import { _Todo } from 'shared'
 import { Todo, User } from './model'
 
 export const helloWorld = functions.https.onRequest((request, response) => {
-  const creator = User.collectionRef().doc()
+  const unknownCreator = User.collectionRef().doc()
 
   const todo: Todo.Data = {
     ..._Todo.defaultData({
       now: firestore.Timestamp.now(),
-      creator: { id: creator.id, ref: User.docRef({ userId: creator.id }) },
+      creator: { id: unknownCreator.id, ref: User.docRef({ userId: unknownCreator.id }) },
     }),
   }
 
