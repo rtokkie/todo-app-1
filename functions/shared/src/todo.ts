@@ -2,6 +2,10 @@ export const collectionPath = () => {
   return 'todos'
 }
 
+export type DocRefOptions = {
+  todoId: string
+}
+
 export type Data<DocRef, Time> = {
   content: string
   completed: boolean
@@ -14,7 +18,7 @@ export type Data<DocRef, Time> = {
   }
 }
 
-export const getDefaultData = <DocRef, Time>({
+export const defaultData = <DocRef, Time>({
   now,
   creator,
 }: {

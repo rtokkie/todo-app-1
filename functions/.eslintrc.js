@@ -14,6 +14,5 @@ module.exports = {
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     'simple-import-sort/imports': 'error',
     'simple-import-sort/exports': 'error',
-    'no-restricted-imports': ['error', 'shared'],
   },
 }

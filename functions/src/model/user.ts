@@ -1,7 +1,8 @@
-import { _User } from 'shared/src'
-import { db } from 'src/firebaseApp'
-import { createConvertor } from 'src/lib/firestore'
-import { Timestamp, WithIdAndRef } from 'src/types'
+import { _User } from 'shared'
+
+import { db } from '../firebaseApp'
+import { createConvertor } from '../lib/firestore'
+import { Timestamp, WithIdAndRef } from '../types'
 
 export type Data = _User.Data<Timestamp>
 
@@ -13,6 +14,6 @@ export const collectionRef = () => {
   return db.collection(_User.collectionPath()).withConverter(convertor)
 }
 
-export const docRef = ({ todoId }: { todoId: string }) => {
-  return collectionRef().doc(todoId)
+export const docRef = ({ userId }: _User.DocRefOptions) => {
+  return collectionRef().doc(userId)
 }
