@@ -1,4 +1,4 @@
 export type WithIdAndRef<Data, DocumentReference> = Data & {
-  id: string;
-  ref: DocumentReference;
-};
+  id: string
+  ref: DocumentReference
+}
