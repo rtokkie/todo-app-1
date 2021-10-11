@@ -1,23 +1,6 @@
 import { firestore } from 'firebase-admin'
 
 import { db } from '../firebaseApp'
-import { FieldValue } from '../types'
-
-type Primitive = string | number | boolean | undefined | null
-
-export type WithFieldValue<T> = T extends Record<string, unknown>
-  ? {
-      [K in keyof T]: WithFieldValue<T[K]>
-    }
-  : T | FieldValue
-
-// export type WithFieldValue<T> = T extends Primitive
-// ? T
-// : T extends Record<string, unknown>
-// ? {
-//     [K in keyof T]: WithFieldValue<T[K]> | firestore.FieldValue
-//   }
-// : T
 
 /**
  * Fetch Firestore Data
