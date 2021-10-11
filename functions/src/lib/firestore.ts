@@ -43,7 +43,7 @@ export const createTypedRef = <Data, CollectionPathOptions extends Record<string
   collectionPath: (params: CollectionPathOptions) => string
 ) => {
   const convertor: firestore.FirestoreDataConverter<Data> = {
-    toFirestore: (data) => {
+    toFirestore: (data: Data | Partial<Data>) => {
       return data as firestore.DocumentData
     },
     fromFirestore: (snap: firestore.DocumentSnapshot) => {
