@@ -11308,7 +11308,7 @@ sha.js@^2.4.0, sha.js@^2.4.8:
     inherits "^2.0.1"
     safe-buffer "^5.0.1"
 
-"shared@link:../functions/shared":
+"shared@link:../shared":
   version "0.0.0"
   uid ""
 
