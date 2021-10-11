@@ -3,6 +3,9 @@ import { DependencyList, useEffect, useMemo, useState } from 'react'
 
 import { WithIdAndRef } from '../types'
 
+/**
+ * Subscribe Firestore Data
+ */
 const snapshotOptions: SnapshotOptions = { serverTimestamps: 'estimate' }
 
 export const useSubscribeDoc = <Data>(
@@ -64,6 +67,9 @@ export const useSubscribeDocs = <Data>(query: Query<Data> | null, deps: Dependen
   return [values, initialized] as const
 }
 
+/**
+ * Use Firestore Data With Default Data
+ */
 export const useDocWithDefaultData = <Data>(
   doc: WithIdAndRef<Data> | undefined,
   defaultData: () => Data
@@ -85,7 +91,7 @@ export const useDocsWithDefaultData = <Data>(
 ) => {
   const withDefaultData = useMemo(() => {
     if (!docs) {
-      return docs
+      return undefined
     }
 
     return docs.map((doc) => ({ ...defaultData(), ...doc }))
