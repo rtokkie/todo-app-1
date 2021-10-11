@@ -3,12 +3,14 @@
   "scripts": {
     "build": "tsc",
     "start": "tsc -w",
-    "serve": "yarn build && firebase emulators:start --only functions",
-    "shell": "yarn build && firebase functions:shell",
-    "predeploy": "yarn build:shared && npm pack ../shared && yarn add file:./shared-1.0.0.tgz",
+    "predeploy": "yarn build:shared && yarn pack:shared && yarn add:file:shared",
     "deploy": "firebase deploy --only functions",
+    "postdeploy": "rimraf shared-1.0.0.tgz && yarn add:link:shared",
     "logs": "firebase functions:log",
-    "build:shared": "cd ../shared && yarn build"
+    "build:shared": "cd ../shared && yarn build",
+    "pack:shared": "npm pack ../shared",
+    "add:file:shared": "yarn add file:./shared-1.0.0.tgz",
+    "add:link:shared": "yarn add link:../shared"
   },
   "engines": {
     "node": "14"
