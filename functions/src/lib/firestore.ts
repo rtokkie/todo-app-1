@@ -1,38 +1,29 @@
 import { firestore } from 'firebase-admin'
 
-import { WithIdAndRef } from '../types'
+import { db } from '../firebaseApp'
+import { FieldValue } from '../types'
 
 type Primitive = string | number | boolean | undefined | null
 
-export type WithFieldValue<T> = T extends Primitive
-  ? T
-  : T extends Record<string, unknown>
+export type WithFieldValue<T> = T extends Record<string, unknown>
   ? {
-      [K in keyof T]: WithFieldValue<T[K]> | firestore.FieldValue
+      [K in keyof T]: WithFieldValue<T[K]>
     }
-  : T
+  : T | FieldValue
 
-// NOTE: 改造前
 // export type WithFieldValue<T> = T extends Primitive
-//   ? T
-//   : T extends {}
-//   ? {
-//       [K in keyof T]: WithFieldValue<T[K]> | firestore.FieldValue
-//     }
-//   : Partial<T>
+// ? T
+// : T extends Record<string, unknown>
+// ? {
+//     [K in keyof T]: WithFieldValue<T[K]> | firestore.FieldValue
+//   }
+// : T
 
-export const createConvertor = <Data>() => {
-  return {
-    toFirestore: (data: WithFieldValue<Data> | Partial<WithFieldValue<Data>>) => {
-      return data as firestore.DocumentData
-    },
-    fromFirestore: (snap: firestore.DocumentSnapshot) => {
-      return snap.data() as Data
-    },
-  }
-}
+/**
+ * Fetch Firestore Data
+ */
 
-export const fetchDoc = async <Data>(docRef: firestore.DocumentReference) => {
+export const fetchDoc = async <Data>(docRef: firestore.DocumentReference<Data>) => {
   const docSnap = await docRef.get()
 
   if (!docSnap.exists) {
@@ -43,17 +34,55 @@ export const fetchDoc = async <Data>(docRef: firestore.DocumentReference) => {
     id: docSnap.id,
     ref: docSnap.ref,
     ...docSnap.data(),
-  } as WithIdAndRef<Data>
+  }
 }
 
-export const fetchDocs = async <Data>(query: firestore.Query) => {
+export const fetchDocs = async <Data>(query: firestore.Query<Data>) => {
   const queryRef = await query.get()
 
   if (queryRef.empty) {
     return undefined
   }
 
-  return queryRef.docs.map(
-    (doc) => ({ id: doc.id, ref: doc.ref, ...doc.data() } as WithIdAndRef<Data>)
-  )
+  return queryRef.docs.map((doc) => ({ id: doc.id, ref: doc.ref, ...doc.data() }))
+}
+
+/**
+ * Create Firestore Reference
+ */
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type FirstParams<Fn extends (...args: any) => any> = Parameters<Fn>['length'] extends 0
+  ? void
+  : Parameters<Fn>[0]
+
+export const createTypedRef = <Data, CollectionPathOptions extends Record<string, unknown> | void>(
+  collectionPath: (params: CollectionPathOptions) => string
+) => {
+  const convertor: firestore.FirestoreDataConverter<Data> = {
+    toFirestore: (data) => {
+      return data as firestore.DocumentData
+    },
+    fromFirestore: (snap: firestore.DocumentSnapshot) => {
+      return snap.data() as Data
+    },
+  }
+
+  const collectionRef = (params: CollectionPathOptions) => {
+    return db.collection(collectionPath(params)).withConverter(convertor)
+  }
+
+  const docRef = (
+    params: CollectionPathOptions extends void
+      ? { id: string }
+      : { id: string } & CollectionPathOptions
+  ) => {
+    const { id, ...collectionPathOptions } = params
+    return collectionRef(collectionPathOptions as unknown as CollectionPathOptions).doc(id)
+  }
+
+  return {
+    collectionRef,
+    docRef,
+  }
 }
