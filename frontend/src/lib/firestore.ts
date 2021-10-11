@@ -15,6 +15,7 @@ import { db } from '../firebaseApp'
 /**
  * Fetch Firestore Data
  */
+
 const snapshotOptions: SnapshotOptions = { serverTimestamps: 'estimate' }
 
 export const fetchDoc = async <Data>(docRef: DocumentReference<Data>) => {
@@ -44,6 +45,7 @@ export const fetchDocs = async <Data>(query: Query<Data>) => {
 /**
  * Create Firestore Reference
  */
+
 export type FirstParams<Fn extends (...args: any) => any> = Parameters<Fn>['length'] extends 0
   ? void
   : Parameters<Fn>[0]

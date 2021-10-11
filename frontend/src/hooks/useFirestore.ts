@@ -6,6 +6,7 @@ import { WithIdAndRef } from '../types'
 /**
  * Subscribe Firestore Data
  */
+
 const snapshotOptions: SnapshotOptions = { serverTimestamps: 'estimate' }
 
 export const useSubscribeDoc = <Data>(
@@ -70,6 +71,7 @@ export const useSubscribeDocs = <Data>(query: Query<Data> | null, deps: Dependen
 /**
  * Use Firestore Data With Default Data
  */
+
 export const useDocWithDefaultData = <Data>(
   doc: WithIdAndRef<Data> | undefined,
   defaultData: () => Data
