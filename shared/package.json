@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
-  "license": "MIT",
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.33.0",
@@ -19,5 +18,6 @@
     "start": "tsc -w",
     "pack": "yarn pack"
   },
-  "private": true
+  "private": true,
+  "license": "MIT"
 }
