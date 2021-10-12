@@ -1,17 +1,19 @@
 {
   "name": "functions",
   "scripts": {
+    "prebuild": "rimraf lib",
     "build": "tsc",
+    "prestart": "rimraf lib",
     "start": "tsc -w",
-    "deploy": "firebase deploy --only functions",
     "logs": "firebase functions:log",
     "build:shared": "cd ../shared && yarn build",
     "cp:shared": "cpx '../shared/**' 'shared' -C",
     "rm:shared": "rimraf ./shared",
     "add:shared:link": "yarn add link:../shared",
     "add:shared:file": "yarn add file:./shared",
-    "predeploy": "run-s build:shared cp:shared add:shared:file",
-    "postdeploy": "run-s rm:shared add:shared:link"
+    "predeploy": "run-s build:shared cp:shared add:shared:file build",
+    "postdeploy": "run-s rm:shared add:shared:link",
+    "deploy": "firebase deploy --only functions"
   },
   "engines": {
     "node": "14"
