@@ -6,13 +6,13 @@
     "deploy": "firebase deploy --only functions",
     "logs": "firebase functions:log",
     "build:shared": "cd ../shared && yarn build",
-    "predeploy": "node pre-deploy",
-    "postdeploy": "node post-deploy"
+    "predeploy": "node pre-deploy && yarn add file:./shared",
+    "postdeploy": "node post-deploy && yarn add link:../shared"
   },
   "engines": {
     "node": "14"
   },
-  "main": "lib/src/index.js",
+  "main": "lib/index.js",
   "dependencies": {
     "firebase-admin": "^9.8.0",
     "firebase-functions": "^3.14.1",
