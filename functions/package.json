@@ -6,7 +6,7 @@
     "prestart": "rimraf lib",
     "start": "tsc -w",
     "logs": "firebase functions:log",
-    "build:shared": "cd ../shared && yarn build",
+    "build:shared": "cd ../shared && yarn build:clean",
     "cp:shared": "cpx '../shared/**' 'shared' -C",
     "rm:shared": "rimraf ./shared",
     "add:shared:link": "yarn add link:../shared",

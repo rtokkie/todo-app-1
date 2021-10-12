@@ -14,7 +14,6 @@ import {
 /**
  * Fetch Firestore Data
  */
-
 const snapshotOptions: SnapshotOptions = { serverTimestamps: 'estimate' }
 
 export const fetchDoc = async <Data>(docRef: DocumentReference<Data>) => {
@@ -44,7 +43,6 @@ export const fetchDocs = async <Data>(query: Query<Data>) => {
 /**
  * Create Firestore Reference
  */
-
 export const createTypedRef = <Data, CollectionPathOptions extends Record<string, unknown> | void>(
   db: Firestore,
   collectionPath: (params: CollectionPathOptions) => string

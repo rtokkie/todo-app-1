@@ -3,7 +3,6 @@ import { firestore } from 'firebase-admin'
 /**
  * Fetch Firestore Data
  */
-
 export const fetchDoc = async <Data>(docRef: firestore.DocumentReference<Data>) => {
   const docSnap = await docRef.get()
 
@@ -31,7 +30,6 @@ export const fetchDocs = async <Data>(query: firestore.Query<Data>) => {
 /**
  * Create Firestore Reference
  */
-
 export const createTypedRef = <Data, CollectionPathOptions extends Record<string, unknown> | void>(
   db: FirebaseFirestore.Firestore,
   collectionPath: (params: CollectionPathOptions) => string
