@@ -6,8 +6,12 @@
     "deploy": "firebase deploy --only functions",
     "logs": "firebase functions:log",
     "build:shared": "cd ../shared && yarn build",
-    "predeploy": "node pre-deploy && yarn add file:./shared",
-    "postdeploy": "node post-deploy && yarn add link:../shared"
+    "cp:shared": "cpx -C ../stared",
+    "rm:shared": "rimraf ./shared",
+    "add:shared:link": "yarn add link:../shared",
+    "add:shared:file": "yarn add file:./shared",
+    "predeploy": "node pre-deploy",
+    "postdeploy": "node post-deploy"
   },
   "engines": {
     "node": "14"
