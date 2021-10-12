@@ -17,6 +17,5 @@
     "start": "tsc -w"
   },
   "private": true,
-  "license": "MIT",
-  "dependencies": {}
+  "license": "MIT"
 }
