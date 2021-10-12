@@ -3,14 +3,13 @@ import {
   doc,
   DocumentData,
   DocumentReference,
+  Firestore,
   FirestoreDataConverter,
   getDoc,
   getDocs,
   Query,
   SnapshotOptions,
 } from 'firebase/firestore'
-
-import { db } from '../firebaseApp'
 
 /**
  * Fetch Firestore Data
@@ -46,14 +45,11 @@ export const fetchDocs = async <Data>(query: Query<Data>) => {
  * Create Firestore Reference
  */
 
-export type FirstParams<Fn extends (...args: any) => any> = Parameters<Fn>['length'] extends 0
-  ? void
-  : Parameters<Fn>[0]
-
 export const createTypedRef = <Data, CollectionPathOptions extends Record<string, unknown> | void>(
+  db: Firestore,
   collectionPath: (params: CollectionPathOptions) => string
 ) => {
-  const convertor: FirestoreDataConverter<Data> = {
+  const converter: FirestoreDataConverter<Data> = {
     toFirestore: (data) => {
       return data as DocumentData
     },
@@ -63,7 +59,7 @@ export const createTypedRef = <Data, CollectionPathOptions extends Record<string
   }
 
   const collectionRef = (params: CollectionPathOptions) => {
-    return collection(db, collectionPath(params)).withConverter(convertor)
+    return collection(db, collectionPath(params)).withConverter(converter)
   }
 
   const docRef = (
@@ -76,8 +72,8 @@ export const createTypedRef = <Data, CollectionPathOptions extends Record<string
       db,
       collectionPath(collectionPathOptions as unknown as CollectionPathOptions),
       id
-    ).withConverter(convertor)
+    ).withConverter(converter)
   }
 
-  return { collectionRef, docRef }
+  return { converter, collectionRef, docRef }
 }

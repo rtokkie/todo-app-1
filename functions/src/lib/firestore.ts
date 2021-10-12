@@ -1,7 +1,5 @@
 import { firestore } from 'firebase-admin'
 
-import { db } from '../firebaseApp'
-
 /**
  * Fetch Firestore Data
  */
@@ -34,15 +32,11 @@ export const fetchDocs = async <Data>(query: firestore.Query<Data>) => {
  * Create Firestore Reference
  */
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type FirstParams<Fn extends (...args: any) => any> = Parameters<Fn>['length'] extends 0
-  ? void
-  : Parameters<Fn>[0]
-
 export const createTypedRef = <Data, CollectionPathOptions extends Record<string, unknown> | void>(
+  db: FirebaseFirestore.Firestore,
   collectionPath: (params: CollectionPathOptions) => string
 ) => {
-  const convertor: firestore.FirestoreDataConverter<Data> = {
+  const converter: firestore.FirestoreDataConverter<Data> = {
     toFirestore: (data: Data | Partial<Data>) => {
       return data as firestore.DocumentData
     },
@@ -52,7 +46,7 @@ export const createTypedRef = <Data, CollectionPathOptions extends Record<string
   }
 
   const collectionRef = (params: CollectionPathOptions) => {
-    return db.collection(collectionPath(params)).withConverter(convertor)
+    return db.collection(collectionPath(params)).withConverter(converter)
   }
 
   const docRef = (
@@ -65,6 +59,7 @@ export const createTypedRef = <Data, CollectionPathOptions extends Record<string
   }
 
   return {
+    converter,
     collectionRef,
     docRef,
   }
