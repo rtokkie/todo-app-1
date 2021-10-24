@@ -13,7 +13,7 @@ export const fetchDoc = async <Data>(docRef: firestore.DocumentReference<Data>) 
   return {
     id: docSnap.id,
     ref: docSnap.ref,
-    ...docSnap.data(),
+    ...(docSnap.data() as Data),
   }
 }
 
@@ -24,7 +24,7 @@ export const fetchDocs = async <Data>(query: firestore.Query<Data>) => {
     return undefined
   }
 
-  return queryRef.docs.map((doc) => ({ id: doc.id, ref: doc.ref, ...doc.data() }))
+  return queryRef.docs.map((doc) => ({ id: doc.id, ref: doc.ref, ...(doc.data() as Data) }))
 }
 
 /**

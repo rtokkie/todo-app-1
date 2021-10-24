@@ -11,6 +11,8 @@ import {
   SnapshotOptions,
 } from 'firebase/firestore'
 
+import { WithIdAndRef } from '../types'
+
 /**
  * Fetch Firestore Data
  */
@@ -26,8 +28,8 @@ export const fetchDoc = async <Data>(docRef: DocumentReference<Data>) => {
   return {
     id: docSnap.id,
     ref: docSnap.ref,
-    ...docSnap.data(snapshotOptions),
-  }
+    ...(docSnap.data(snapshotOptions) as Data),
+  } as WithIdAndRef<Data>
 }
 
 export const fetchDocs = async <Data>(query: Query<Data>) => {
@@ -37,7 +39,14 @@ export const fetchDocs = async <Data>(query: Query<Data>) => {
     return undefined
   }
 
-  return queryRef.docs.map((doc) => ({ id: doc.id, ref: doc.ref, ...doc.data(snapshotOptions) }))
+  return queryRef.docs.map(
+    (doc) =>
+      ({
+        id: doc.id,
+        ref: doc.ref,
+        ...(doc.data(snapshotOptions) as Data),
+      } as WithIdAndRef<Data>)
+  )
 }
 
 /**

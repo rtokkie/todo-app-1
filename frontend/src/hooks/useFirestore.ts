@@ -1,5 +1,5 @@
 import { DocumentReference, onSnapshot, Query, SnapshotOptions } from 'firebase/firestore'
-import { DependencyList, useEffect, useMemo, useState } from 'react'
+import { DependencyList, useEffect, useState } from 'react'
 
 import { WithIdAndRef } from '../types'
 
@@ -65,37 +65,4 @@ export const useSubscribeDocs = <Data>(query: Query<Data> | null, deps: Dependen
   }, deps)
 
   return [values, initialized] as const
-}
-
-/**
- * Use Firestore Data With Default Data
- */
-export const useDocWithDefaultData = <Data>(
-  doc: WithIdAndRef<Data> | undefined,
-  defaultData: () => Data
-) => {
-  const withDefaultData = useMemo(() => {
-    if (!doc) {
-      return undefined
-    }
-
-    return { ...defaultData(), ...doc }
-  }, [defaultData, doc])
-
-  return withDefaultData
-}
-
-export const useDocsWithDefaultData = <Data>(
-  docs: WithIdAndRef<Data>[] | undefined,
-  defaultData: () => Data
-) => {
-  const withDefaultData = useMemo(() => {
-    if (!docs) {
-      return undefined
-    }
-
-    return docs.map((doc) => ({ ...defaultData(), ...doc }))
-  }, [defaultData, docs])
-
-  return withDefaultData
 }
