@@ -29,6 +29,9 @@ export const fetchDocs = async <Data>(query: firestore.Query<Data>) => {
 
 /**
  * Create Firestore Reference
+ * args for Converter =>
+ * args for Reference =>
+ * Reference With Converter
  */
 export const createTypedRef =
   <Data>() =>

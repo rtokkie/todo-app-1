@@ -9,7 +9,7 @@ export type Data<DocumentReference, Timestamp> = {
   updatedAt: Timestamp
   deletedAt: Timestamp | null
 
-  // NOTE: User
+  // NOTE: UserDoc
   creator: {
     id: string
     ref: DocumentReference
