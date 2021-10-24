@@ -1,13 +1,13 @@
 import { Timestamp } from 'firebase/firestore'
-import { _User } from 'shared'
+import { Schema } from 'shared'
 
 import { db } from '../firebaseApp'
-import { createTypedRef } from '../lib/firestore'
 import { WithIdAndRef } from '../types'
+import { createTypedRef } from '../util/firestore'
 
-export type Data = _User.Data<Timestamp>
+export type Data = Schema.User.Data<Timestamp>
 export type Model = WithIdAndRef<Data>
-export const { converter, collectionRef, docRef } = createTypedRef<
-  Data,
-  _User.CollectionPathOptions
->(db, _User.collectionPath)
+export const typedRef = createTypedRef<Data, Schema.User.CollectionPathOptions>(
+  db,
+  Schema.User.collectionPath
+)

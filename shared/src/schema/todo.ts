@@ -11,7 +11,7 @@ export type Data<DocumentReference, Timestamp> = {
   updatedAt: Timestamp
   deletedAt: Timestamp | null
 
-  // NOTE: user
+  // NOTE: User
   creator: {
     id: string
     ref: DocumentReference
