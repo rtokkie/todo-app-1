@@ -1,6 +1,4 @@
-export type CollectionPathOptions = { userId: string }
-
-export const collectionPath = ({ userId }: CollectionPathOptions) => {
+export const collectionPath = ({ userId }: { userId: string }) => {
   return `users/${userId}/todos`
 }
 

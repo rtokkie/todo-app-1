@@ -30,35 +30,33 @@ export const fetchDocs = async <Data>(query: firestore.Query<Data>) => {
 /**
  * Create Firestore Reference
  */
-export const createTypedRef = <Data, CollectionPathOptions extends Record<string, unknown> | void>(
-  db: FirebaseFirestore.Firestore,
-  collectionPath: (params: CollectionPathOptions) => string
-) => {
-  const converter: firestore.FirestoreDataConverter<Data> = {
-    toFirestore: (data: Data | Partial<Data>) => {
-      return data as firestore.DocumentData
-    },
-    fromFirestore: (snap: firestore.DocumentSnapshot) => {
-      return snap.data() as Data
-    },
-  }
-
-  const collectionRef = (params: CollectionPathOptions) => {
-    return db.collection(collectionPath(params)).withConverter(converter)
-  }
-
-  const docRef = (
-    params: CollectionPathOptions extends void
-      ? { id: string }
-      : { id: string } & CollectionPathOptions
+export const createTypedRef =
+  <Data>() =>
+  <Params extends Record<string, unknown> | void>(
+    db: FirebaseFirestore.Firestore,
+    collectionPath: (params: Params) => string
   ) => {
-    const { id, ...collectionPathOptions } = params
-    return collectionRef(collectionPathOptions as unknown as CollectionPathOptions).doc(id)
-  }
+    const converter: firestore.FirestoreDataConverter<Data> = {
+      toFirestore: (data: Data | Partial<Data>) => {
+        return data as firestore.DocumentData
+      },
+      fromFirestore: (snap: firestore.DocumentSnapshot) => {
+        return snap.data() as Data
+      },
+    }
 
-  return {
-    converter,
-    collectionRef,
-    docRef,
+    const collectionRef = (params: Params) => {
+      return db.collection(collectionPath(params)).withConverter(converter)
+    }
+
+    const docRef = (params: Params extends void ? { id: string } : { id: string } & Params) => {
+      const { id, ..._params } = params
+      return collectionRef(_params as unknown as Params).doc(id)
+    }
+
+    return {
+      converter,
+      collectionRef,
+      docRef,
+    }
   }
-}

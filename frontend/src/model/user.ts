@@ -7,7 +7,4 @@ import { createTypedRef } from '../util/firestore'
 
 export type Data = Schema.User.Data<Timestamp>
 export type Model = WithIdAndRef<Data>
-export const typedRef = createTypedRef<Data, Schema.User.CollectionPathOptions>(
-  db,
-  Schema.User.collectionPath
-)
+export const typedRef = createTypedRef<Data>()(db, Schema.User.collectionPath)

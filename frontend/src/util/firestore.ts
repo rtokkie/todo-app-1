@@ -42,36 +42,33 @@ export const fetchDocs = async <Data>(query: Query<Data>) => {
 
 /**
  * Create Firestore Reference
+ * Converter 作るための引数 =>
+ * Reference 作るための引数 =>
+ * Reference With Converter
  */
-export const createTypedRef = <Data, CollectionPathOptions extends Record<string, unknown> | void>(
-  db: Firestore,
-  collectionPath: (params: CollectionPathOptions) => string
-) => {
-  const converter: FirestoreDataConverter<Data> = {
-    toFirestore: (data) => {
-      return data as DocumentData
-    },
-    fromFirestore: (snap, options) => {
-      return snap.data(options) as Data
-    },
-  }
-
-  const collectionRef = (params: CollectionPathOptions) => {
-    return collection(db, collectionPath(params)).withConverter(converter)
-  }
-
-  const docRef = (
-    params: CollectionPathOptions extends void
-      ? { id: string }
-      : { id: string } & CollectionPathOptions
+export const createTypedRef =
+  <Data>() =>
+  <Params extends Record<string, unknown> | void>(
+    db: Firestore,
+    collectionPath: (params: Params) => string
   ) => {
-    const { id, ...collectionPathOptions } = params
-    return doc(
-      db,
-      collectionPath(collectionPathOptions as unknown as CollectionPathOptions),
-      id
-    ).withConverter(converter)
-  }
+    const converter: FirestoreDataConverter<Data> = {
+      toFirestore: (data) => {
+        return data as DocumentData
+      },
+      fromFirestore: (snap, options) => {
+        return snap.data(options) as Data
+      },
+    }
 
-  return { converter, collectionRef, docRef }
-}
+    const collectionRef = (params: Params) => {
+      return collection(db, collectionPath(params)).withConverter(converter)
+    }
+
+    const docRef = (params: Params extends void ? { id: string } : { id: string } & Params) => {
+      const { id, ..._params } = params
+      return doc(db, collectionPath(_params as unknown as Params), id).withConverter(converter)
+    }
+
+    return { converter, collectionRef, docRef }
+  }

@@ -1,5 +1,3 @@
-export type CollectionPathOptions = void
-
 export const collectionPath = () => {
   return 'users'
 }
