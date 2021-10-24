@@ -6,5 +6,5 @@ import { WithIdAndRef } from '../types'
 import { createTypedRef } from '../util/firestore'
 
 export type Data = Schema.User.Data<Timestamp>
-export type Model = WithIdAndRef<Data>
+export type Doc = WithIdAndRef<Data>
 export const typedRef = createTypedRef<Data>()(db, Schema.User.collectionPath)
