@@ -57,9 +57,9 @@ export const fetchDocs = async <Data>(query: Query<Data>) => {
  */
 export const createTypedRef =
   <Data>() =>
-  <Params extends Record<string, unknown> | void>(
+  <CollectionParams>(
     db: Firestore,
-    collectionPath: (params: Params) => string
+    collectionPath: (collectionParams: CollectionParams) => string
   ) => {
     const converter: FirestoreDataConverter<Data> = {
       toFirestore: (data) => {
@@ -70,13 +70,22 @@ export const createTypedRef =
       },
     }
 
-    const collectionRef = (params: Params) => {
-      return collection(db, collectionPath(params)).withConverter(converter)
+    const collectionRef = (collectionParams: CollectionParams) => {
+      return collection(db, collectionPath(collectionParams)).withConverter(converter)
     }
 
-    const docRef = (params: Params extends void ? { id: string } : { id: string } & Params) => {
-      const { id, ..._params } = params
-      return doc(db, collectionPath(_params as unknown as Params), id).withConverter(converter)
+    const docRef = (
+      docParams: CollectionParams extends void ? { id: string } : { id: string } & CollectionParams
+    ) => {
+      const { id, ..._collectionParams } = docParams
+      const collectionParams =
+        Object.keys(_collectionParams).length > 0 ? _collectionParams : undefined
+
+      return doc(
+        db,
+        collectionPath(collectionParams as unknown as CollectionParams),
+        docParams.id
+      ).withConverter(converter)
     }
 
     return { converter, collectionRef, docRef }
