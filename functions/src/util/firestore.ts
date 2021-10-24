@@ -55,9 +55,10 @@ export const createTypedRef =
     const docRef = (
       docParams: CollectionParams extends void ? { id: string } : { id: string } & CollectionParams
     ) => {
-      const { id, ..._collectionParams } = docParams
-      const collectionParams =
-        Object.keys(_collectionParams).length > 0 ? _collectionParams : undefined
+      const { id, ...rest } = docParams
+      const collectionParams = (collectionPath.length > 0
+        ? rest
+        : undefined) as unknown as CollectionParams
 
       return collectionRef(collectionParams as unknown as CollectionParams).doc(id)
     }
